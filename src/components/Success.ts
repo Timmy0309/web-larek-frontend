@@ -1,15 +1,16 @@
 import { ensureElement } from '../utils/utils';
+import { Component } from './base/Component';
 import { IEvents } from './base/events';
 
 interface ISuccess {
     total: number;
 }
 
-interface ISuccessActions {
+interface ISuccessActions{
     onClick: () => void;
 }
 
-export class Success {
+export class Success extends Component<ISuccess>{
     protected _close: HTMLButtonElement;
     protected _total: HTMLElement;
 
@@ -17,8 +18,18 @@ export class Success {
         container: HTMLElement,
         events: IEvents,
         actions: ISuccessActions
-    ) {}
+    ) {
+        super(container);
+        this._total = ensureElement<HTMLElement>('order-success__description', this.container);
+        this._total = ensureElement<HTMLElement>('order-success__description', this.container);
+
+        if(actions?.onClick) {
+            this._close.addEventListener('click', actions.onClick);
+        }
+    }
 
 
-    set total(value: number) {}
+    set total(value: number) {
+        this.setText(this._total, `Списано ${value} синапсов`);
+    }
 }
