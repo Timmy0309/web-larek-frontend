@@ -1,6 +1,5 @@
 import { IBasket, IProduct, PaymentMethod, TOrder } from '../types';
 import { IEvents } from './base/events';
-import { Model } from './base/Model';
 
 
 export class AppData {
@@ -9,6 +8,7 @@ export class AppData {
 	basket: IBasket = {
 		items: [],
 		total: 0,
+		index: 0
 	};
 	order: TOrder = {
 		email: '',
@@ -42,7 +42,7 @@ export class AppData {
     }
 
 	removeFromBasket(item: IProduct) {
-		this.basket.items = this.basket.items.filter(id => {item.id !== id});
+		this.basket.items = this.basket.items.filter((id) => id !== item.id);
 		this.basket.total -= item.price;
 		this.events.emit('basket:change', this.basket);
 	}

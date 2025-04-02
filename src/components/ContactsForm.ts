@@ -4,20 +4,21 @@ import { IEvents } from './base/events';
 import { ensureElement } from '../utils/utils';
 
 export class ContactsForm extends Form<TContactsForm> {
-
-    protected _email: HTMLInputElement;
+	protected _email: HTMLInputElement;
 	protected _phone: HTMLInputElement;
 
-	constructor(container: HTMLFormElement, events: IEvents){
-        super(container, events);
-    }
+	constructor(container: HTMLFormElement, events: IEvents) {
+		super(container, events);
 
-    set email(value: string){
-        this._email.value = value;
-    }
+		this._email = ensureElement<HTMLInputElement>('.form__input[name=email]', this.container);
+		this._phone = ensureElement<HTMLInputElement>('.form__input[name=phone]', this.container);
+	}
 
-    set phone(value: string){
-        this._phone.value = value;
+	set email(value: string) {
+		this._email.value = value;
+	}
 
-    }
+	set phone(value: string) {
+		this._phone.value = value;
+	}
 }

@@ -1,6 +1,6 @@
 import { IEvents } from "./base/events";
 import { ensureElement } from "../utils/utils";
-import { Component } from "./base/Component";
+import { Component, View } from "./base/Component";
 
 interface IPage {
     counter: number;
@@ -8,7 +8,7 @@ interface IPage {
     locked: boolean;
 }
 
-export class Page extends Component<IPage> {
+export class Page extends View<IPage> {
     protected _counter: HTMLElement;
     protected _catalog: HTMLElement;
     protected _wrapper: HTMLElement;
@@ -16,11 +16,11 @@ export class Page extends Component<IPage> {
 
 
     constructor(container: HTMLElement, protected events: IEvents) {
-        super(container);
-        this._counter = this.container.querySelector('.header__basket-counter');
-		this._catalog = this.container.querySelector('.gallery');
-		this._basket = this.container.querySelector('.header__basket');
-		this._wrapper = this.container.querySelector('.page__wrapper');
+        super(container, events);
+        this._counter = ensureElement<HTMLElement>('.header__basket-counter');
+        this._catalog = ensureElement<HTMLElement>('.gallery');
+        this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
+        this._basket = ensureElement<HTMLElement>('.header__basket');
 
         if (this._basket) {
 			this._basket.addEventListener('click', () => {
@@ -38,11 +38,6 @@ export class Page extends Component<IPage> {
     }
 
     set locked(value: boolean) {
-        if (value) {
-            this._wrapper.classList.add('page__wrapper_locked');
-        }
-        else {
-            this._wrapper.classList.remove('page__wrapper_locked');
-        }
+        this.toggleClass(this._wrapper, 'page__wrapper_locked', value);
     }
 }

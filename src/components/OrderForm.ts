@@ -6,33 +6,40 @@ import { ensureElement } from '../utils/utils';
 export class OrderForm extends Form<TOrderForm> {
 	protected _paymentCard: HTMLButtonElement;
 	protected _paymentCash: HTMLButtonElement;
+	protected _address: HTMLInputElement;
 
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 
-		this._paymentCard = ensureElement<HTMLButtonElement>('[name=card]', this.container);
-		this._paymentCash = ensureElement<HTMLButtonElement>('[name=cash]', this.container);
+		this._paymentCard = ensureElement<HTMLButtonElement>(
+			'.button_alt[name=card]',
+			this.container
+		);
+		this._paymentCash = ensureElement<HTMLButtonElement>(
+			'.button_alt[name=cash]',
+			this.container
+		);
+		this._address = ensureElement<HTMLInputElement>(
+			'.form__input[name=address]',
+			this.container
+		);
 
 		this._paymentCard.addEventListener('click', () => {
-			this._paymentCard.classList.add('button_alt_active');
-			this._paymentCard.classList.remove('button_alt');
-			this._paymentCash.classList.add('button_alt');
-			this._paymentCash.classList.remove('button_alt_active');
-			this.events.emit('order:change', { field: 'payment', value: 'online' });
+			this.payment = 'card';
+			this.onInputChange('payment', 'card');
 		});
-
 		this._paymentCash.addEventListener('click', () => {
-			this._paymentCash.classList.add('button_alt_active');
-			this._paymentCash.classList.remove('button_alt');
-			this._paymentCard.classList.add('button_alt');
-			this._paymentCard.classList.remove('button_alt_active');
-			this.events.emit('order:change', { field: 'payment', value: 'online' });
+			this.payment = 'cash';
+			this.onInputChange('payment', 'cash');
 		});
-
-
 	}
 
-	set address(val: string) {
-		(this.container.elements.namedItem('address') as HTMLSelectElement).value = val;
+	set payment(value: PaymentMethod) {
+		this.toggleClass(this._paymentCard, 'button_alt-active', value === 'card');
+		this.toggleClass(this._paymentCash, 'button_alt-active', value === 'cash');
+	}
+
+	set address(value: string) {
+		this._address.value = value;
 	}
 }

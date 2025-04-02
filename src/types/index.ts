@@ -7,9 +7,15 @@ export interface IProduct {
 	price: number | null;
 }
 
+export interface IProductList {
+	total: number;
+	items: IProduct[];
+}
+
 export interface IBasket {
-    items: string[];
-    total: number;
+	items: string[];
+	total: number;
+    index: number;
 }
 
 export type PaymentMethod = 'cash' | 'card';

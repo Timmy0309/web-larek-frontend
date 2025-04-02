@@ -56,3 +56,9 @@ export abstract class Component<T> {
 		return this.container;
 	}
 }
+
+export class View<T> extends Component<T> {
+	constructor(container: HTMLElement, protected readonly events: IEvents) {
+		super(container);
+	}
+}
